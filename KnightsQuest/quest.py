@@ -30,7 +30,8 @@ def grid_coords(actor):
 #determines the actor location on the grid
 
 def setup_game():
-    global player, keys_to_collect
+    global game_over, player, keys_to_collect
+    game_over=False
     player=Actor("player", anchor=("left", "top"))
     keys_to_collect=[]
     for y in range (grid_height):
@@ -42,6 +43,7 @@ def setup_game():
                 key=Actor("key", anchor=("left", "top"), \
                     pos=screen_coords(x,y))
                 keys_to_collect.append(key)
+#sets game over as false
 #initializes the player and key on the screeen
 #allows keys to be pickup-able
 
@@ -85,6 +87,9 @@ def on_key(key):
 #determines which direction player will move based on key pressed
 
 def move_player(dx, dy):
+    global game_over
+    if game_over:
+        return
     (x,y)=grid_coords(player)
     x+=dx
     y+=dy
@@ -92,10 +97,16 @@ def move_player(dx, dy):
     if square=="W":
         return
     elif square=="D":
-        return
+        if len(keys_to_collect)>0:
+            return
+        else:
+            game_ovar=True
+    for key in keys_to_collect:
+        (key_x, key_y)=grid_coords(key)
+        break
     player.pos=screen__coords(x,y)
 #allows player movement but limits it based on other elements present in the scene
-
+#removes key fromm key position if the actor is in the same position
 
 setup_game()
 pgzrun.go()
