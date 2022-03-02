@@ -75,14 +75,14 @@ def draw():
     draw_actors()
 #draws background first, scenery on top, and then actors on top of that
 
-def on_key(key):
+def on_key_down(key):
     if key==keys.LEFT:
         move_player(-1,0)
     elif key==keys.UP:
         move_player(0,-1)
     elif key==keys.RIGHT:
         move_player(1,0)
-    elif key==key.DOWN:
+    elif key==keys.DOWN:
         move_player(0,1)
 #determines which direction player will move based on key pressed
 
@@ -104,6 +104,7 @@ def move_player(dx, dy):
     for key in keys_to_collect:
         (key_x, key_y)=grid_coords(key)
         if x==key_x and y==key_y:
+            keys_to_collect.remove(key)
             break
     player.pos=screen_coords(x,y)
 #allows player movement but limits it based on other elements present in the scene
