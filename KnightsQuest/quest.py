@@ -83,6 +83,12 @@ def draw_game_over():
     screen_middle=(WIDTH/2,HEIGHT/2)
     screen.draw.text("game over", midbottom=screen_middle, \
         fontsize=grid_size, color="pink", owidth=1)
+    if player_won:
+        screen.draw.text("you won!", midtop=screen_midddle, \
+            fontsize="green", owidth=1)
+    else:
+        screen.draw.text("try again", midtop=screen_midddle, \
+            fontsize="red", owidth=1)
 #defines how game over will be drawn and where 
 
 def draw():
