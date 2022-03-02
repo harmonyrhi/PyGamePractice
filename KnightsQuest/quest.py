@@ -3,7 +3,8 @@ import pgzrun
 grid_width=16
 grid_height=12
 grid_size=50
-#determines the size of each swuare in the grid
+guard_move_interval=.5
+#determines the size of each square in the grid
 
 WIDTH=grid_width*grid_size
 HEIGHT=grid_height*grid_size
@@ -30,10 +31,12 @@ def grid_coords(actor):
 #determines the actor location on the grid
 
 def setup_game():
-    global game_over, player, keys_to_collect
+    global game_over, player_won, player, keys_to_collect, guards
     game_over=False
+    player_won=False
     player=Actor("player", anchor=("left", "top"))
     keys_to_collect=[]
+    guards=[]
     for y in range (grid_height):
         for x in range (grid_width):
             square=MAP[y][x]
@@ -43,9 +46,14 @@ def setup_game():
                 key=Actor("key", anchor=("left", "top"), \
                     pos=screen_coords(x,y))
                 keys_to_collect.append(key)
+            elif square=="G":
+                 guard=Actor("guard", anchor=("left", "top"), \
+                    pos=screen_coords(x,y))
+                 guards.append(guard)
 #sets game over as false
 #initializes the player and key on the screeen
 #allows keys to be pickup-able
+#inserts guards
 
 def draw_background():
     for y in range (grid_height):
@@ -67,12 +75,14 @@ def draw_actors():
     player.draw()
     for key in keys_to_collect:
         key.draw()
+    for guard in guards:
+        guard.draw()
 #draws the player with player.draw and each key in the list of keys with key.draw
 
 def draw_game_over():
     screen_middle=(WIDTH/2,HEIGHT/2)
     screen.draw.text("game over", midbottom=screen_middle, \
-        fontsize=grid_size, color="cyan", owidth=1)
+        fontsize=grid_size, color="pink", owidth=1)
 #defines how game over will be drawn and where 
 
 def draw():
@@ -95,7 +105,7 @@ def on_key_down(key):
 #determines which direction player will move based on key pressed
 
 def move_player(dx, dy):
-    global game_over
+    global game_over, player_won
     if game_over:
         return
     (x,y)=grid_coords(player)
@@ -109,6 +119,7 @@ def move_player(dx, dy):
             return
         else:
             game_over=True
+            player_won=True
     for key in keys_to_collect:
         (key_x, key_y)=grid_coords(key)
         if x==key_x and y==key_y:
@@ -118,5 +129,31 @@ def move_player(dx, dy):
 #allows player movement but limits it based on other elements present in the scene
 #removes key fromm key position if the actor is in the same position
 
+def move_guard(guard):
+    global game_over
+    if game_over:
+        return
+    (player_x,player_y)=grid_coords(player)
+    (guard_x, guard_y)=grid_coords(guard)
+    if player_x > guard_x and MAP[guard_y][guard_x+1]!="W":
+        guard_x+=1
+    elif player_x < guard_x and MAP[guard_y][guard_x-1]!="W":
+        guard_x-=1
+    elif player_y > guard_y and MAP[guard_y+1][guard_x]!="W":
+        guard_y+=1
+    elif player_y < guard_y and MAP[guard_y-1][guard_x]!="W":
+        guard_y-=1
+    guard.pos=screen_coords(guard_x,guard_y)
+    if guard_x==player_x and guard_y==player_y:
+        game_over=True
+#tells the guard actors how to move towards the player. if there is no wall between them,
+#move towards player and if they are in the same square game over
+
+def move_guards():
+    for guard in guards:
+        move_guard(guard)
+
+
 setup_game()
+clock.schedule_interval(move_guards,guard_move_interval)
 pgzrun.go()
