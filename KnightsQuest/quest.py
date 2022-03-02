@@ -69,11 +69,19 @@ def draw_actors():
         key.draw()
 #draws the player with player.draw and each key in the list of keys with key.draw
 
+def draw_game_over():
+    screen_middle=(WIDTH/2,HEIGHT/2)
+    screen.draw.text("game over", midbottom=screen_middle, \
+        fontsize=grid_size, color="cyan", owidth=1)
+#defines how game over will be drawn and where 
+
 def draw():
     draw_background()
     draw_scenery()
     draw_actors()
-#draws background first, scenery on top, and then actors on top of that
+    if game_over:
+        draw_game_over()
+#draws background first, scenery on top, and then actors on top of that and will draw game over if game over
 
 def on_key_down(key):
     if key==keys.LEFT:
