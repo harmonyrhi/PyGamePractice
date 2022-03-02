@@ -93,7 +93,7 @@ def move_player(dx, dy):
     (x,y)=grid_coords(player)
     x+=dx
     y+=dy
-    square=MAP[x][y]
+    square=MAP[y][x]
     if square=="W":
         return
     elif square=="D":
