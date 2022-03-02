@@ -26,7 +26,7 @@ def screen_coords(x,y):
 #creates screen coordinates from the grid and its position
 
 def grid_coords(actor):
-    return (round(actor.x/grid_size), round(actor.y/grid_size))
+    return (round(actor.x/ grid_size), round(actor.y/ grid_size))
 #determines the actor location on the grid
 
 def setup_game():
@@ -100,11 +100,12 @@ def move_player(dx, dy):
         if len(keys_to_collect)>0:
             return
         else:
-            game_ovar=True
+            game_over=True
     for key in keys_to_collect:
         (key_x, key_y)=grid_coords(key)
-        break
-    player.pos=screen__coords(x,y)
+        if x==key_x and y==key_y:
+            break
+    player.pos=screen_coords(x,y)
 #allows player movement but limits it based on other elements present in the scene
 #removes key fromm key position if the actor is in the same position
 
