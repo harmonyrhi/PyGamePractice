@@ -84,11 +84,14 @@ def draw_game_over():
     screen.draw.text("game over", midbottom=screen_middle, \
         fontsize=grid_size, color="pink", owidth=1)
     if player_won:
-        screen.draw.text("you won!", midtop=screen_midddle, \
-            fontsize="green", owidth=1)
+        screen.draw.text("you won!", midtop=screen_middle, \
+            fontsize=grid_size, color="green", owidth=1)
     else:
-        screen.draw.text("try again", midtop=screen_midddle, \
-            fontsize="red", owidth=1)
+        screen.draw.text("try again", midtop=screen_middle, \
+            fontsize=grid_size, color="red", owidth=1)
+    screen.draw.text("press space to play again", midtop=(WIDTH/2, \
+            HEIGHT/2+grid_size), fontsize=grid_size/2, \
+            color="pink", owidth=1)
 #defines how game over will be drawn and where 
 
 def draw():
@@ -98,6 +101,11 @@ def draw():
     if game_over:
         draw_game_over()
 #draws background first, scenery on top, and then actors on top of that and will draw game over if game over
+
+def on_key_up(key):
+    if key==keys.SPACE and game_over:
+        setup_game()
+#allows user to restart game with spacebar
 
 def on_key_down(key):
     if key==keys.LEFT:
