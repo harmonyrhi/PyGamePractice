@@ -157,7 +157,8 @@ def move_guard(guard):
         guard_y+=1
     elif player_y < guard_y and MAP[guard_y-1][guard_x]!="W":
         guard_y-=1
-    guard.pos=screen_coords(guard_x,guard_y)
+    animate(guard, pos=screen_coords(guard_x,guard_y),\
+        duration=guard_move_interval)
     if guard_x==player_x and guard_y==player_y:
         game_over=True
 #tells the guard actors how to move towards the player. if there is no wall between them,
