@@ -4,6 +4,7 @@ grid_width=16
 grid_height=12
 grid_size=50
 guard_move_interval=.5
+player_move_interval=.1
 #determines the size of each square in the grid
 
 WIDTH=grid_width*grid_size
@@ -139,7 +140,8 @@ def move_player(dx, dy):
         if x==key_x and y==key_y:
             keys_to_collect.remove(key)
             break
-    player.pos=screen_coords(x,y)
+    animate(player, pos=screen_coords(x,y), \
+        duration=player_move_interval)
 #allows player movement but limits it based on other elements present in the scene
 #removes key fromm key position if the actor is in the same position
 
