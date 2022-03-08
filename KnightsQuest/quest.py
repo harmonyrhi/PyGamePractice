@@ -1,10 +1,12 @@
 import pgzrun
+import random
 
 grid_width=16
 grid_height=12
 grid_size=50
 guard_move_interval=.5
 player_move_interval=.1
+background_seed=123456
 #determines the size of each square in the grid
 
 WIDTH=grid_width*grid_size
@@ -57,9 +59,18 @@ def setup_game():
 #inserts guards
 
 def draw_background():
+    random.seed(background_seed)
     for y in range (grid_height):
         for x in range (grid_width):
-            screen.blit("floor1", screen_coords(x,y))
+            if x%2==y%2:
+                screen.blit("floor1", screen_coords(x,y))
+            else:
+                 screen.blit("floor2", screen_coords(x,y))
+    n=random.randint(0,99)
+    if n<5:
+        screen.blit("crack1", screen_coords(x,y))
+    elif n<10:
+        screen.blit("crack2", screen_coords(x,y))
 #adds floor image to game
 
 def draw_scenery():
